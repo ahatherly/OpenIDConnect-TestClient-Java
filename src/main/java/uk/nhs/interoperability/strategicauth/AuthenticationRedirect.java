@@ -1,5 +1,10 @@
 package uk.nhs.interoperability.strategicauth;
 
+import static uk.nhs.interoperability.strategicauth.Config.clientId;
+import static uk.nhs.interoperability.strategicauth.Config.clientSecret;
+import static uk.nhs.interoperability.strategicauth.Config.redirectURI;
+import static uk.nhs.interoperability.strategicauth.Config.tokenLocation;
+
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -15,8 +20,6 @@ import org.apache.oltu.oauth2.client.response.OAuthJSONAccessTokenResponse;
 import org.apache.oltu.oauth2.common.exception.OAuthProblemException;
 import org.apache.oltu.oauth2.common.exception.OAuthSystemException;
 import org.apache.oltu.oauth2.common.message.types.GrantType;
-
-import static uk.nhs.interoperability.strategicauth.Config.*;
 
 /**
  * This servlet is called once the user is authenticated, and calls the token endpoint to
@@ -44,6 +47,7 @@ public class AuthenticationRedirect extends HttpServlet {
 		try {
 			OAuthAuthzResponse oar = OAuthAuthzResponse.oauthCodeAuthzResponse(request);
 			String code = oar.getCode();
+			//response.getWriter().append("Authentication token code: ").append(code);
 			
 			// Exchange OAuth ID token for an Access token:
 			OAuthClientRequest authz_request = OAuthClientRequest
@@ -61,6 +65,7 @@ public class AuthenticationRedirect extends HttpServlet {
 	        OAuthJSONAccessTokenResponse oAuthResponse = oAuthClient.accessToken(authz_request);
 	
 			response.getWriter().append("Token: ").append(oAuthResponse.getAccessToken());
+			
 		} catch (OAuthProblemException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

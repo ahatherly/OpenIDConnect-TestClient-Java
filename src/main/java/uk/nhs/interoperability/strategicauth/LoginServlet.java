@@ -32,6 +32,7 @@ public class LoginServlet extends HttpServlet {
 					   .setClientId(clientId)
 					   .setRedirectURI(redirectURI)
 					   .setResponseType(ResponseType.CODE.toString())
+					   .setScope("profile")
 					   .buildQueryMessage();
 			
 			response.sendRedirect(auth_request.getLocationUri());
